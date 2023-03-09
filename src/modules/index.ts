@@ -9,3 +9,4 @@ export { VoiceSecurityRegister } from "./security/voiceSecutiry";
 export { InviteTrackRegister } from "./tracking/inviteTrack";
 export { LoggerBanRegister } from "./logger/banLog";
 export { PublicLoggerMemberGuildRegister } from "./logger/memberGuildPublic";
+export { PublicLoggerBanRegister } from "./logger/banLogPublic";
