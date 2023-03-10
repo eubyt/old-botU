@@ -15,3 +15,4 @@ export { EventChannelPinsUpdate } from "./channel/channelPinsUpdate";
 export { EventGuildBanAdd } from "./member/guildBanAdd";
 export { EventGuildBanRemove } from "./member/guildBanRemove";
 export { EventGuildMemberTimeout } from "./member/guildMemberTimeout";
+export { EventMessageCreate } from "./message/messageCreate";

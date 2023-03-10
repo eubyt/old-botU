@@ -14,6 +14,7 @@ import {
     EventGuildMemberTimeout,
     EventInviteCreate,
     EventInviteDelete,
+    EventMessageCreate,
     EventMessageDelete,
     EventMessageUpdate,
     EventThreadCreate,
@@ -22,6 +23,7 @@ import {
     EventVoiceStateUpdate,
 } from "./event";
 import {
+    AntiInviteRegister,
     InviteTrackRegister,
     LoggerBanRegister,
     LoggerChannelRegister,
@@ -122,6 +124,7 @@ client.once(Events.ClientReady, () => {
     // Register Message Event
     registerEvent(new EventMessageUpdate(client), LoggerMessageRegister);
     registerEvent(new EventMessageDelete(client), LoggerMessageRegister);
+    registerEvent(new EventMessageCreate(client), AntiInviteRegister);
 
     // Join and Leave Guild
     registerEvent(new EventGuildMemberAdd(client), [

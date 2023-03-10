@@ -34,6 +34,7 @@ class GuildData {
         config: {
             security: {
                 protectChannelVoice: true,
+                antiDiscordInvite: true,
             },
             autorole: {
                 memberGuildAddRole: null,
