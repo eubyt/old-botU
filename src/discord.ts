@@ -12,6 +12,7 @@ import {
     EventGuildMemberAdd,
     EventGuildMemberRemove,
     EventGuildMemberTimeout,
+    EventGuildMemberUpdate,
     EventInviteCreate,
     EventInviteDelete,
     EventMessageCreate,
@@ -37,6 +38,9 @@ import {
     PublicLoggerMemberGuildRegister,
     VoiceSecurityRegister,
 } from "./modules";
+import { sendMessageToChannel } from "./modules/messages/messageUtil";
+import { EventInteractionCreate } from "./event/interaction/interactionCreate";
+import { FuncModuleRegister } from "./modules/handleFunc/funcModule";
 
 const client = new Client({
     intents: [
@@ -100,7 +104,7 @@ client.once(Events.ClientReady, () => {
     console.log("Discord bot is ready!");
 
     client.guilds.cache.forEach((guild) => {
-        console.log(`Guild: ${guild.name} (${guild.id})`);
+        console.log(`Loading Guild: ${guild.name} (${guild.id})`);
         getGuildData(guild.id, client);
     });
 
@@ -136,6 +140,10 @@ client.once(Events.ClientReady, () => {
         LoggerMemberGuildRegister,
         PublicLoggerMemberGuildRegister,
     ]);
+    registerEvent(
+        new EventGuildMemberUpdate(client),
+        LoggerMemberGuildRegister
+    );
 
     // Register Invite Event
     registerEvent(new EventInviteCreate(client), InviteTrackRegister);
@@ -154,6 +162,9 @@ client.once(Events.ClientReady, () => {
         LoggerBanRegister,
         PublicLoggerBanRegister,
     ]);
+
+    // Register Interaction Event
+    registerEvent(new EventInteractionCreate(client), FuncModuleRegister);
 });
 
 async function start() {

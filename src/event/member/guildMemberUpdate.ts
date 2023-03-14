@@ -3,13 +3,16 @@ import { getGuildData } from "../../guildData";
 import { DiscordArgsOf, DiscordOn } from "../../types";
 import { Event } from "../eventCreator";
 
-class EventGuildMemberAdd extends Event<"memberGuildUpdate"> {
+class EventGuildMemberUpdate extends Event<"memberGuildUpdate"> {
     constructor(client: Client) {
         super(client);
     }
 
-    @DiscordOn({ event: "guildMemberAdd" })
-    async registerEvent([member]: DiscordArgsOf<"guildMemberAdd">) {
+    @DiscordOn({ event: "guildMemberUpdate" })
+    async registerEvent([
+        oldMember,
+        member,
+    ]: DiscordArgsOf<"guildMemberUpdate">) {
         const dataGuild = await getGuildData(member.guild.id, this.client);
 
         if (!dataGuild) {
@@ -20,13 +23,14 @@ class EventGuildMemberAdd extends Event<"memberGuildUpdate"> {
         const invite = await dataGuild.getInviteNewUse();
 
         this.emit({
-            event: "join",
+            event: "update",
             guildId: member.guild.id,
             user: member.user,
+            oldUser: oldMember.user,
             invite: invite ?? null,
             joinedAt: member.joinedAt,
         });
     }
 }
 
-export { EventGuildMemberAdd };
+export { EventGuildMemberUpdate };

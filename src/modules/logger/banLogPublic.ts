@@ -2,11 +2,11 @@ import { Client } from "discord.js";
 import { getGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 
-async function PublicLoggerBanRegister(
+function PublicLoggerBanRegister(
     client: Client,
     data: EVENT_RESPONSE["memberBanUpdate"]
 ) {
-    const dataGuild = await getGuildData(data.guildId, client);
+    const dataGuild = getGuildData(data.guildId, client);
 
     if (!dataGuild) {
         console.error("Guild data not found!");

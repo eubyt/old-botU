@@ -2,11 +2,11 @@ import { ChannelType, Client } from "discord.js";
 import { getGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 
-async function AntiInviteRegister(
+function AntiInviteRegister(
     client: Client,
     data: EVENT_RESPONSE["messageStateUpdate"]
 ) {
-    const dataGuild = await getGuildData(data.guildId, client);
+    const dataGuild = getGuildData(data.guildId, client);
     if (!dataGuild) {
         console.error("Guild data not found!");
         return;

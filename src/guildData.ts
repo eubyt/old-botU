@@ -1,11 +1,15 @@
 import {
+    ChannelType,
     Client,
     PrivateThreadChannel,
     PublicThreadChannel,
+    TextChannel,
     User,
 } from "discord.js";
 import { getFirestore } from "firebase-admin/firestore";
 import { firebaseApp } from "./main";
+import { sendMessageToChannel } from "./modules/messages/messageUtil";
+import { ModelGuildData } from "./types";
 
 const cacheData = new Map<string, GuildData>();
 
@@ -18,7 +22,7 @@ class GuildData {
         channelId: string;
     }>();
 
-    private documentGuild = {
+    private documentGuild: ModelGuildData = {
         name: "",
         id: "",
         channelLog: {
@@ -40,6 +44,8 @@ class GuildData {
                 memberGuildAddRole: null,
             },
         },
+        templateMessage: [],
+        channelMessage: [],
         createdAt: new Date(),
         updatedAt: new Date(),
     };
@@ -52,47 +58,58 @@ class GuildData {
         this.documentGuild.id = guildId;
 
         this.loadingInvites();
+        this.loadingDocument();
+    }
 
+    async loadingDocument() {
         const db = getFirestore(firebaseApp);
 
-        db.collection("guilds")
-            .doc(guildId)
-            .get()
-            .then((doc) => {
-                if (!doc.exists) {
-                    // Create guild in database
-                    db.collection("guilds")
-                        .doc(guildId)
-                        .set(this.documentGuild);
-                    console.log(guildId, "not found in database, created!");
-                } else {
-                    // Check old data
-                    const data = doc.data() as typeof this.documentGuild;
-                    if (
-                        Object.keys(data).length !==
-                        Object.keys(this.documentGuild).length
-                    ) {
-                        console.log(guildId, "has old data, updating...");
+        const doc = await db
+            .collection("guilds")
+            .doc(this.documentGuild.id)
+            .get();
 
-                        /// TODO: Refactor this
-                        Object.keys(this.documentGuild).forEach((key) => {
-                            if (data[key as keyof typeof this.documentGuild]) {
-                                this.documentGuild[
-                                    key as keyof typeof this.documentGuild
-                                ] = data[
-                                    key as keyof typeof this.documentGuild
-                                ] as any;
-                            }
-                        });
+        if (!doc.exists) {
+            // Create guild in database
+            db.collection("guilds")
+                .doc(this.documentGuild.id)
+                .set(this.documentGuild);
+            console.log(
+                this.documentGuild.id,
+                "not found in database, created!"
+            );
+        } else {
+            // Check old data
+            const data = doc.data() as typeof this.documentGuild;
+            if (
+                Object.keys(data).length !==
+                Object.keys(this.documentGuild).length
+            ) {
+                console.log(this.documentGuild.id, "has old data, updating...");
 
-                        this.documentGuild.updatedAt = new Date();
-                        this.uploadDocument();
-                    } else {
-                        this.documentGuild = data;
-                        console.log(guildId, "found in database!");
+                /// TODO: Refactor this
+                Object.keys(this.documentGuild).forEach((key) => {
+                    if (data[key as keyof typeof this.documentGuild]) {
+                        this.documentGuild[
+                            key as keyof typeof this.documentGuild
+                        ] = data[key as keyof typeof this.documentGuild] as any;
                     }
-                }
-            });
+                });
+
+                this.documentGuild.updatedAt = new Date();
+                this.uploadDocument();
+            } else {
+                this.documentGuild = data;
+                console.log(this.documentGuild.id, "found in database!");
+
+                sendMessageToChannel(
+                    this.client,
+                    this.documentGuild.id,
+                    "1064082148765732947",
+                    "selfRole"
+                );
+            }
+        }
     }
 
     async uploadDocument() {
@@ -116,6 +133,55 @@ class GuildData {
             user: invite.inviter,
             channelId: invite.channelId ?? "null",
         }));
+    }
+
+    getMessageTemplate(id: string) {
+        return (
+            this.documentGuild.templateMessage?.find(
+                (template) => template.id === id
+            ) ?? null
+        );
+    }
+
+    getTemplateToChannel(templateId: string) {
+        return (
+            this.documentGuild.channelMessage?.find(
+                (template) => template.templateId === templateId
+            ) ?? null
+        );
+    }
+
+    async removeTemplateToChannel(templateId: string, channelId: string) {
+        if (!this.documentGuild.channelMessage) return;
+
+        const index = this.documentGuild.channelMessage.findIndex(
+            (template) =>
+                template.templateId === templateId &&
+                template.channelId === channelId
+        );
+
+        if (index === -1) return;
+
+        this.documentGuild.channelMessage.splice(index, 1);
+        await this.uploadDocument();
+    }
+
+    addTemplateToChannel(
+        templateId: string,
+        channelId: string,
+        messageId: string
+    ) {
+        if (!this.documentGuild.channelMessage) {
+            this.documentGuild.channelMessage = [];
+        }
+
+        this.documentGuild.channelMessage?.push({
+            templateId,
+            channelId,
+            messageId,
+        });
+
+        this.uploadDocument();
     }
 
     async getInviteNewUse() {
@@ -144,14 +210,20 @@ class GuildData {
             return null;
         }
 
-        if (!channel.isThread() || !channel.isTextBased()) return null;
-        if (channel.isDMBased()) return null;
-
-        return channel;
+        if (
+            channel.type === ChannelType.GuildText ||
+            channel.type === ChannelType.PublicThread ||
+            channel.type === ChannelType.PrivateThread
+        )
+            return channel;
+        else {
+            return null;
+        }
     }
 
     getLoggerChannels(): {
         [key: string]:
+            | TextChannel
             | PrivateThreadChannel
             | PublicThreadChannel<boolean>
             | null;
@@ -173,7 +245,7 @@ class GuildData {
     }
 }
 
-async function getGuildData(guildId: string, client: Client) {
+function getGuildData(guildId: string, client: Client) {
     if (cacheData.has(guildId)) {
         return cacheData.get(guildId);
     }

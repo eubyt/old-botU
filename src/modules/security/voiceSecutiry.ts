@@ -10,11 +10,11 @@ const spamVoiceMuted = new Array<{
     count: number;
 }>();
 
-async function VoiceSecurityRegister(
+function VoiceSecurityRegister(
     client: Client,
     data: EVENT_RESPONSE["voiceStateUpdate"]
 ) {
-    const dataGuild = await getGuildData(data.guildId, client);
+    const dataGuild = getGuildData(data.guildId, client);
     if (!dataGuild) {
         console.error("Guild data not found!");
         return;

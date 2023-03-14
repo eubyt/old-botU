@@ -1,12 +1,13 @@
 import { Client } from "discord.js";
 import { getGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
+import { Color } from "../../utils/color";
 
-async function LoggerBanRegister(
+function LoggerBanRegister(
     client: Client,
     data: EVENT_RESPONSE["memberBanUpdate"]
 ) {
-    const dataGuild = await getGuildData(data.guildId, client);
+    const dataGuild = getGuildData(data.guildId, client);
 
     if (!dataGuild) {
         console.error("Guild data not found!");
@@ -24,7 +25,7 @@ async function LoggerBanRegister(
                 title: "",
                 description: "",
                 timestamp: new Date().toISOString(),
-                color: 0x495156,
+                color: Color.EMBED_TRANSPARENT,
                 fields: [
                     {
                         name: "> ID",
