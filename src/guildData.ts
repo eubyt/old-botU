@@ -22,6 +22,8 @@ class GuildData {
         channelId: string;
     }>();
 
+    public NOTIFICATIONS = new Array();
+
     private documentGuild: ModelGuildData = {
         name: "",
         id: "",
@@ -42,6 +44,13 @@ class GuildData {
                         twitchId: "",
                         channelId: "",
                         templateId: "",
+                        twitter: {
+                            consumer_key: "",
+                            consumer_secret: "",
+                            access_token_key: "",
+                            access_token_secret: "",
+                            content: "",
+                        },
                     },
                 ],
             },
