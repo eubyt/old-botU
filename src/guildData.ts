@@ -36,9 +36,18 @@ class GuildData {
             banLog_public: "1083401204278763572",
         },
         config: {
+            notifications: {
+                twitch: [
+                    {
+                        twitchId: "",
+                        channelId: "",
+                        templateId: "",
+                    },
+                ],
+            },
             security: {
-                protectChannelVoice: true,
-                antiDiscordInvite: true,
+                protectChannelVoice: false,
+                antiDiscordInvite: false,
             },
             autorole: {
                 memberGuildAddRole: null,
@@ -51,7 +60,7 @@ class GuildData {
         updatedAt: new Date(),
     };
 
-    constructor(guildId: string, public readonly client: Client) {
+    constructor(guildId: string, readonly client: Client) {
         this.client = client;
 
         this.documentGuild.name =
@@ -183,6 +192,14 @@ class GuildData {
         });
 
         this.uploadDocument();
+    }
+
+    getNotification(type: "twitch") {
+        try {
+            return this.documentGuild.config.notifications[type];
+        } catch (e) {
+            return null;
+        }
     }
 
     async getInviteNewUse() {

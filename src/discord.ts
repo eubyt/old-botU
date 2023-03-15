@@ -42,6 +42,7 @@ import {
 } from "./modules";
 import { EventInteractionCreate } from "./event/interaction/interactionCreate";
 import { FuncModuleRegister } from "./modules/handleFunc/funcModule";
+import { NotificationsCheck } from "./modules/messages/notifcations";
 
 const client = new Client({
     intents: [
@@ -76,6 +77,7 @@ const client = new Client({
 
 // Configs
 const BOT_DISCORD_PRESENCE_INTERVAL = 60;
+const BOT_NOTIFICATION_CHECK_INTERVAL = 5;
 
 function registerOnDiscord(eventClass: DiscordEvent) {
     const data = Reflect.getMetadata("discord:on", eventClass, "registerEvent");
@@ -178,6 +180,14 @@ async function start() {
     setInterval(
         () => PresenceEdit(client, "simple"),
         BOT_DISCORD_PRESENCE_INTERVAL * 1000
+    );
+
+    setInterval(
+        () =>
+            client.guilds.cache.forEach((guild) =>
+                NotificationsCheck(client, guild.id)
+            ),
+        BOT_NOTIFICATION_CHECK_INTERVAL * 1000
     );
 }
 

@@ -9,7 +9,10 @@ import {
 import { getGuildData } from "../../guildData";
 import { Color } from "../../utils/color";
 
-function newLine(content: string) {
+function convert(content: string, args: any) {
+    for (const key in args) {
+        content = content.replace(new RegExp(`{${key}}`, "g"), args[key]);
+    }
     return content.replace(/\\n/g, "\n");
 }
 
@@ -17,7 +20,9 @@ async function sendMessageToChannel(
     client: Client,
     guildId: string,
     channelId: string | Function,
-    idMessage: string
+    idMessage: string,
+    args = {},
+    noSave = false
 ) {
     const dataGuild = getGuildData(guildId, client);
 
@@ -43,15 +48,15 @@ async function sendMessageToChannel(
     let messageCreator: any = {};
 
     if (messageData.content)
-        messageCreator.content = newLine(messageData.content);
+        messageCreator.content = convert(messageData.content, args);
 
     if (messageData.ephemeral) messageCreator.ephemeral = true;
 
     if (messageData.embeds) {
         messageData.embeds.forEach((embed) => {
-            if (embed.title) embed.title = newLine(embed.title);
+            if (embed.title) embed.title = convert(embed.title, args);
             if (embed.description)
-                embed.description = newLine(embed.description);
+                embed.description = convert(embed.description, args);
             if (embed.color) {
                 embed.color = Color[embed.color as keyof typeof Color];
             }
@@ -123,15 +128,14 @@ async function sendMessageToChannel(
                         channelId
                     );
                 }
-                channel
-                    .send(messageCreator)
-                    .then((message) =>
-                        dataGuild.addTemplateToChannel(
-                            idMessage,
-                            message.channelId,
-                            message.id
-                        )
+                channel.send(messageCreator).then((message) => {
+                    if (noSave) return;
+                    dataGuild.addTemplateToChannel(
+                        idMessage,
+                        message.channelId,
+                        message.id
                     );
+                });
             }
         }
     } else {
