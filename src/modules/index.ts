@@ -11,3 +11,4 @@ export { LoggerBanRegister } from "./logger/banLog";
 export { PublicLoggerMemberGuildRegister } from "./logger/memberGuildPublic";
 export { PublicLoggerBanRegister } from "./logger/banLogPublic";
 export { AntiInviteRegister } from "./security/antiInvite";
+export { TwitchOnAddRole } from "./roles/twitchOnAddRole";

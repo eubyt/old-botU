@@ -17,3 +17,4 @@ export { EventGuildBanRemove } from "./member/guildBanRemove";
 export { EventGuildMemberTimeout } from "./member/guildMemberTimeout";
 export { EventMessageCreate } from "./message/messageCreate";
 export { EventGuildMemberUpdate } from "./member/guildMemberUpdate";
+export { EventPresenceUpdate } from "./member/presenceUpdate";

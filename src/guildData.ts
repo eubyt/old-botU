@@ -42,6 +42,7 @@ class GuildData {
             },
             autorole: {
                 memberGuildAddRole: null,
+                twitchSteamerRole: null,
             },
         },
         templateMessage: [],

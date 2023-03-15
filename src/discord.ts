@@ -18,6 +18,7 @@ import {
     EventMessageCreate,
     EventMessageDelete,
     EventMessageUpdate,
+    EventPresenceUpdate,
     EventThreadCreate,
     EventThreadDelete,
     EventThreadUpdate,
@@ -36,9 +37,9 @@ import {
     PresenceEdit,
     PublicLoggerBanRegister,
     PublicLoggerMemberGuildRegister,
+    TwitchOnAddRole,
     VoiceSecurityRegister,
 } from "./modules";
-import { sendMessageToChannel } from "./modules/messages/messageUtil";
 import { EventInteractionCreate } from "./event/interaction/interactionCreate";
 import { FuncModuleRegister } from "./modules/handleFunc/funcModule";
 
@@ -165,6 +166,9 @@ client.once(Events.ClientReady, () => {
 
     // Register Interaction Event
     registerEvent(new EventInteractionCreate(client), FuncModuleRegister);
+
+    // Discord Presence
+    registerEvent(new EventPresenceUpdate(client), TwitchOnAddRole);
 });
 
 async function start() {

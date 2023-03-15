@@ -106,6 +106,11 @@ type Thread = {
 };
 
 export interface EVENT_RESPONSE {
+    presenceUpdate: {
+        activity: "none" | "twitch";
+        guildId: string;
+        user: User;
+    };
     interactionUpdate: {
         event: "addRole" | "switchRole" | "sendMessage";
         args: string[];
