@@ -168,9 +168,7 @@ async function LoggerMemberGuildRegister(
                             "``",
                     }
                 );
-            }
-
-            if (
+            } else if (
                 guildMember.roles.cache.size !== oldGuildMember.roles.cache.size
             ) {
                 embed.embeds[0].description = `${data.user.tag} alterou seus cargos.`;
@@ -205,9 +203,7 @@ async function LoggerMemberGuildRegister(
                             "```",
                     });
                 }
-            }
-
-            if (data.user.username !== data.oldUser.username) {
+            } else if (data.user.username !== data.oldUser.username) {
                 embed.embeds[0].description = `${data.user.tag} alterou seu username.`;
                 embed.embeds[0].fields.push(
                     {
@@ -219,9 +215,7 @@ async function LoggerMemberGuildRegister(
                         value: "``" + `${data.oldUser.username}` + "``",
                     }
                 );
-            }
-
-            if (data.user.discriminator !== data.oldUser.discriminator) {
+            } else if (data.user.discriminator !== data.oldUser.discriminator) {
                 embed.embeds[0].description = `${data.user.tag} alterou seu discriminator.`;
                 embed.embeds[0].fields.push(
                     {
@@ -233,9 +227,7 @@ async function LoggerMemberGuildRegister(
                         value: "``" + `${data.oldUser.discriminator}` + "``",
                     }
                 );
-            }
-
-            if (data.user.avatar !== data.oldUser.avatar) {
+            } else if (data.user.avatar !== data.oldUser.avatar) {
                 embed.embeds[0].description = `${data.user.tag} alterou seu avatar.`;
                 embed.embeds[0].image = {
                     url: data.user.avatarURL() || undefined,
@@ -246,9 +238,13 @@ async function LoggerMemberGuildRegister(
                         url: data.oldUser.avatarURL() || undefined,
                     };
                 }
+            } else {
+                return;
             }
 
             break;
+        default:
+            return;
     }
 
     logChannel.send(embed);

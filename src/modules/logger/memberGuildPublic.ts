@@ -74,6 +74,8 @@ function PublicLoggerMemberGuildRegister(
         case "kick":
             embed.embeds[0].description =
                 "``" + data.user.tag + "`` saiu do servidor!";
+        default:
+            return;
     }
 
     publicLogChannel.send(embed);

@@ -228,6 +228,8 @@ function LoggerChannelRegister(
                         embed.embeds[0].fields.concat(permissions);
                 }
             }
+        default:
+            return;
     }
 
     logChannel.send(embed);

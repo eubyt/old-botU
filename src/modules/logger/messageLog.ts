@@ -120,6 +120,8 @@ function LoggerMessageRegister(
                     }) || [],
             });
             break;
+        default:
+            return;
     }
 
     logChannel.send(embed);

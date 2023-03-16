@@ -151,8 +151,9 @@ function LoggerThreadRegister(
                     }
                 );
             }
-
             break;
+        default:
+            return;
     }
 
     logChannel.send(embed);

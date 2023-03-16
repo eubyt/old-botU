@@ -79,6 +79,8 @@ function PublicLoggerBanRegister(
                     data.expiration ?? 0
                 ).toFixed(0)}:R>)`,
             });
+        default:
+            return;
     }
 
     logChannel.send(embed);
