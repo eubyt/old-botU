@@ -2,14 +2,14 @@ import { Client } from "discord.js";
 import { getGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 
-function TwitchOnAddRole(
+async function TwitchOnAddRole(
     client: Client,
     data: EVENT_RESPONSE["presenceUpdate"]
 ) {
     const dataGuild = getGuildData(data.guildId, client);
     const guild = client.guilds.cache.get(data.guildId);
 
-    if (!dataGuild) {
+    if (!dataGuild || !guild) {
         console.error("Guild data not found!");
         return;
     }
@@ -17,11 +17,16 @@ function TwitchOnAddRole(
     const config = dataGuild.getOptions().autorole.twitchSteamerRole;
     if (!config || config === "") return;
 
-    const role = guild?.roles.cache.get(config);
-    const member = guild?.members.cache.get(data.user.id);
+    const role = await guild.roles.fetch(config);
+    const member = guild.members.cache.get(data.user.id);
 
-    if (!role || !member) {
-        console.error("Role or member not found!");
+    if (!member) {
+        console.error("Member not found!");
+        return;
+    }
+
+    if (!role) {
+        console.error("Role not found!", data.guildId);
         return;
     }
 

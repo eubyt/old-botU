@@ -38,22 +38,7 @@ class GuildData {
             banLog_public: "1083401204278763572",
         },
         config: {
-            notifications: {
-                twitch: [
-                    {
-                        twitchId: "",
-                        channelId: "",
-                        templateId: "",
-                        twitter: {
-                            consumer_key: "",
-                            consumer_secret: "",
-                            access_token_key: "",
-                            access_token_secret: "",
-                            content: "",
-                        },
-                    },
-                ],
-            },
+            notifications: {},
             security: {
                 protectChannelVoice: false,
                 antiDiscordInvite: false,
@@ -121,12 +106,12 @@ class GuildData {
                 this.documentGuild = data;
                 console.log(this.documentGuild.id, "found in database!");
 
-                sendMessageToChannel(
-                    this.client,
-                    this.documentGuild.id,
-                    "1064082148765732947",
-                    "selfRole"
-                );
+                // sendMessageToChannel(
+                //     this.client,
+                //     this.documentGuild.id,
+                //     "1064082148765732947",
+                //     "selfRole"
+                // );
             }
         }
     }
@@ -215,8 +200,6 @@ class GuildData {
         const oldInvites = this.invites;
         await this.loadingInvites(); // Load new invites
 
-        console.log(oldInvites, this.invites);
-
         const invite = this.invites.find((newInvite) => {
             const oldInvite = oldInvites.find(
                 (oldInvite) => oldInvite.code === newInvite.code
@@ -282,4 +265,8 @@ function getGuildData(guildId: string, client: Client) {
     return guildData;
 }
 
-export { getGuildData };
+function removeGuildData(guildId: string) {
+    cacheData.delete(guildId);
+}
+
+export { getGuildData, removeGuildData };

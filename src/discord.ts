@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, Events, Partials } from "discord.js";
 import { DISCORD_BOT_TOKEN } from "./environment";
-import { getGuildData } from "./guildData";
+import { getGuildData, removeGuildData } from "./guildData";
 import { DiscordEvent } from "./types";
 import {
     EventChannelCreate,
@@ -102,6 +102,16 @@ function registerEvent(
     }
     registerOnDiscord(eventClass);
 }
+
+client.on(Events.GuildCreate, (guild) => {
+    console.log(`Joined Guild: ${guild.name} (${guild.id})`);
+    getGuildData(guild.id, client);
+});
+
+client.on(Events.GuildDelete, (guild) => {
+    console.log(`Left Guild: ${guild.name} (${guild.id})`);
+    removeGuildData(guild.id);
+});
 
 client.once(Events.ClientReady, () => {
     console.log("Discord bot is ready!");
