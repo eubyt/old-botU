@@ -139,6 +139,26 @@ class GuildData {
         }));
     }
 
+    async getInviteNewUse() {
+        const oldInvites = this.invites;
+        await this.loadingInvites(); // Load new invites
+
+        const invite = this.invites.find((newInvite) => {
+            const oldInvite = oldInvites.find(
+                (oldInvite) => oldInvite.code === newInvite.code
+            );
+
+            if (!oldInvite) return null;
+            return newInvite.uses > oldInvite.uses;
+        });
+
+        return invite;
+    }
+
+    getInvites() {
+        return this.invites;
+    }
+
     getMessageTemplate(id: string) {
         return (
             this.documentGuild.templateMessage?.find(
@@ -194,22 +214,6 @@ class GuildData {
         } catch (e) {
             return null;
         }
-    }
-
-    async getInviteNewUse() {
-        const oldInvites = this.invites;
-        await this.loadingInvites(); // Load new invites
-
-        const invite = this.invites.find((newInvite) => {
-            const oldInvite = oldInvites.find(
-                (oldInvite) => oldInvite.code === newInvite.code
-            );
-
-            if (!oldInvite) return null;
-            return newInvite.uses > oldInvite.uses;
-        });
-
-        return invite;
     }
 
     private getChannel(id: string) {

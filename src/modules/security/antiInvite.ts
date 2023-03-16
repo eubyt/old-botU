@@ -2,7 +2,7 @@ import { ChannelType, Client } from "discord.js";
 import { getGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 
-function AntiInviteRegister(
+async function AntiInviteRegister(
     client: Client,
     data: EVENT_RESPONSE["messageStateUpdate"]
 ) {
@@ -30,6 +30,13 @@ function AntiInviteRegister(
 
     const channel = guild.channels.cache.get(data.message.channel);
     if (!channel || channel.type !== ChannelType.GuildText) return;
+
+    await dataGuild.loadingInvites();
+    const inviteServer = dataGuild
+        .getInvites()
+        .find((i) => i.code === invite[0].split("/").pop());
+
+    if (!inviteServer && invite.length < 2) return;
 
     channel.messages.fetch(data.message.id).then((msg) => {
         msg.delete();
