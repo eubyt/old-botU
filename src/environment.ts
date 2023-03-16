@@ -8,7 +8,10 @@ export const REDIS_PORT = parseInt(process.env.REDIS_PORT as string);
 export const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 
 // Discord config
-export const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
+export const DISCORD_BOT_TOKEN =
+    process.env.NODE_ENV === "developer"
+        ? process.env.DISCORD_BOT_TOKEN_DEV
+        : process.env.DISCORD_BOT_TOKEN;
 
 export const FIREBASE_CREDS = process.env
-  .FIREBASE_SERVICE_ACCOUNT_KEY as string;
+    .FIREBASE_SERVICE_ACCOUNT_KEY as string;
