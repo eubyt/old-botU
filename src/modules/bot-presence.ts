@@ -13,7 +13,6 @@ function PresenceEdit(client: Client, type: PresenceType) {
         "para eubyttttee",
         "AHHH, AAA GUERRAA",
         "daydreamer",
-        "projeto do bot github/eubyt",
     ];
 
     switch (type) {

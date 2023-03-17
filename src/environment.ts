@@ -7,6 +7,7 @@ export const REDIS_USERNAME = process.env.REDIS_USERNAME;
 export const REDIS_PORT = parseInt(process.env.REDIS_PORT as string);
 export const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 
+console.log(process.env.NODE_ENV);
 // Discord config
 export const DISCORD_BOT_TOKEN =
     process.env.NODE_ENV === "developer"
