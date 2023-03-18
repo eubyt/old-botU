@@ -192,6 +192,7 @@ async function start() {
         BOT_DISCORD_PRESENCE_INTERVAL * 1000
     );
 
+    // Check Notifications
     setInterval(
         () =>
             client.guilds.cache.forEach((guild) =>

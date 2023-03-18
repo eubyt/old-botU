@@ -8,7 +8,6 @@ import {
 } from "discord.js";
 import { getFirestore } from "firebase-admin/firestore";
 import { firebaseApp } from "./main";
-import { sendMessageToChannel } from "./modules/messages/messageUtil";
 import { ModelGuildData } from "./types";
 
 const cacheData = new Map<string, GuildData>();

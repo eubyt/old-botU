@@ -18,6 +18,9 @@ function NotificationsCheck(client: Client, guildId: string) {
     twitchData.forEach(async (x) => {
         const twitch = new Twitch(x.twitchId);
         const stream = await twitch.CheckStreamerOnline();
+        console.log(`Checking ${x.twitchId}...`, {
+            streamer_online: stream.streamer_online,
+        });
         if (!stream.streamer_online)
             dataGuild.NOTIFICATIONS.splice(
                 dataGuild.NOTIFICATIONS.indexOf(x.twitchId),

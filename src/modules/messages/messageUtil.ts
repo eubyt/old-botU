@@ -122,12 +122,14 @@ async function sendMessageToChannel(
             if (checkExist && message) {
                 message.edit(messageCreator);
             } else {
-                if (checkExist) {
+                // Remove old message if exist
+                if (checkExist)
                     await dataGuild.removeTemplateToChannel(
                         idMessage,
                         channelId
                     );
-                }
+
+                // Send message and save it
                 channel.send(messageCreator).then((message) => {
                     if (noSave) return;
                     dataGuild.addTemplateToChannel(
