@@ -9,5 +9,10 @@
         "lib": ["esnext"],
         "esModuleInterop": true
     },
-    "exclude": ["node_modules", "dist", "src/cloud_functions", "*.js"]
+    "exclude": [
+        "node_modules",
+        "dist",
+        "discord_bot/src/cloud_functions",
+        "*.js"
+    ]
 }
