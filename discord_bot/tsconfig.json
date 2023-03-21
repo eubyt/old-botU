@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "outDir": "dist",
+        "target": "ESNext",
+        "module": "CommonJS",
+        "strict": true,
+        "lib": ["esnext"],
+        "esModuleInterop": true
+    },
+    "exclude": ["node_modules", "dist", "src/cloud_functions", "*.js"]
+}

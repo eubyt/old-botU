@@ -1,4 +1,7 @@
-node_modules
-dist
+node_modules/
+dist/
 .env
 squarecloud.app
+lib/**/*.js
+lib/**/*.js.map
+typings/
