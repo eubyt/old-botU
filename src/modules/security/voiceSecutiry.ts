@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import { getGuildData } from "../../guildData";
+import { GetGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 
 // Spam Voice Muted
@@ -14,7 +14,7 @@ function VoiceSecurityRegister(
     client: Client,
     data: EVENT_RESPONSE["voiceStateUpdate"]
 ) {
-    const dataGuild = getGuildData(data.guildId, client);
+    const dataGuild = GetGuildData(data.guildId, client);
     if (!dataGuild) {
         console.error("Guild data not found!");
         return;

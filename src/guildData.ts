@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import { getFirestore } from "firebase-admin/firestore";
 import { firebaseApp } from "./main";
+import { RemoveAllTwitchRole } from "./modules/roles/twitchOnAddRole";
 import { ModelGuildData } from "./types";
 
 const cacheData = new Map<string, GuildData>();
@@ -258,18 +259,20 @@ class GuildData {
     }
 }
 
-function getGuildData(guildId: string, client: Client) {
+function GetGuildData(guildId: string, client: Client) {
     if (cacheData.has(guildId)) {
         return cacheData.get(guildId);
     }
 
     const guildData = new GuildData(guildId, client);
     cacheData.set(guildId, guildData);
+
+    RemoveAllTwitchRole(client, guildId);
     return guildData;
 }
 
-function removeGuildData(guildId: string) {
+function RemoveGuildData(guildId: string) {
     cacheData.delete(guildId);
 }
 
-export { getGuildData, removeGuildData };
+export { GetGuildData, RemoveGuildData };

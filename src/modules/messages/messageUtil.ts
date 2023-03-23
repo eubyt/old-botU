@@ -6,7 +6,7 @@ import {
     Client,
     StringSelectMenuBuilder,
 } from "discord.js";
-import { getGuildData } from "../../guildData";
+import { GetGuildData } from "../../guildData";
 import { Color } from "../../utils/color";
 
 function convert(content: string, args: any) {
@@ -24,7 +24,7 @@ async function sendMessageToChannel(
     args = {},
     noSave = false
 ) {
-    const dataGuild = getGuildData(guildId, client);
+    const dataGuild = GetGuildData(guildId, client);
 
     if (!dataGuild) {
         console.error("Guild data not found!");

@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import { getGuildData } from "../../guildData";
+import { GetGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 import { Color } from "../../utils/color";
 import { sendMessageToChannel } from "../messages/messageUtil";
@@ -8,7 +8,7 @@ async function FuncModuleRegister(
     client: Client,
     data: EVENT_RESPONSE["interactionUpdate"]
 ) {
-    const dataGuild = getGuildData(data.guildId, client);
+    const dataGuild = GetGuildData(data.guildId, client);
 
     if (!data.reply) return;
 

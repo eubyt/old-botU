@@ -1,12 +1,34 @@
-import { Client } from "discord.js";
-import { getGuildData } from "../../guildData";
+import { Client, Guild } from "discord.js";
+import { GetGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
+
+function RemoveAllTwitchRole(client: Client, guildId: string) {
+    const dataGuild = GetGuildData(guildId, client);
+    const guild = client.guilds.cache.get(guildId);
+
+    if (!dataGuild || !guild) {
+        console.error("Guild data not found!");
+        return;
+    }
+
+    const config = dataGuild.getOptions().autorole.twitchSteamerRole;
+    if (!config || config === "") return;
+
+    const role = guild.roles.cache.get(config);
+
+    if (!role) {
+        console.error("Role not found!", guild.id);
+        return;
+    }
+
+    guild.members.cache.forEach((member) => member.roles.remove(role));
+}
 
 async function TwitchOnAddRole(
     client: Client,
     data: EVENT_RESPONSE["presenceUpdate"]
 ) {
-    const dataGuild = getGuildData(data.guildId, client);
+    const dataGuild = GetGuildData(data.guildId, client);
     const guild = client.guilds.cache.get(data.guildId);
 
     if (!dataGuild || !guild) {
@@ -39,4 +61,4 @@ async function TwitchOnAddRole(
     }
 }
 
-export { TwitchOnAddRole };
+export { TwitchOnAddRole, RemoveAllTwitchRole };

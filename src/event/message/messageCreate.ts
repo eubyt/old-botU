@@ -1,4 +1,4 @@
-import { AuditLogEvent, Client } from "discord.js";
+import { Client } from "discord.js";
 import { DiscordArgsOf, DiscordOn } from "../../types";
 import { splitMessage } from "../../utils/tools";
 import { Event } from "../eventCreator";

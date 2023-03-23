@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, Events, Partials } from "discord.js";
 import { DISCORD_BOT_TOKEN } from "./environment";
-import { getGuildData, removeGuildData } from "./guildData";
+import { GetGuildData, RemoveGuildData } from "./guildData";
 import { DiscordEvent } from "./types";
 import {
     EventChannelCreate,
@@ -77,7 +77,7 @@ const client = new Client({
 
 // Configs
 const BOT_DISCORD_PRESENCE_INTERVAL = 600;
-const BOT_NOTIFICATION_CHECK_INTERVAL = 10;
+const BOT_NOTIFICATION_CHECK_INTERVAL = 20;
 
 function registerOnDiscord(eventClass: DiscordEvent) {
     const data = Reflect.getMetadata("discord:on", eventClass, "registerEvent");
@@ -105,12 +105,12 @@ function registerEvent(
 
 client.on(Events.GuildCreate, (guild) => {
     console.log(`Joined Guild: ${guild.name} (${guild.id})`);
-    getGuildData(guild.id, client);
+    GetGuildData(guild.id, client);
 });
 
 client.on(Events.GuildDelete, (guild) => {
     console.log(`Left Guild: ${guild.name} (${guild.id})`);
-    removeGuildData(guild.id);
+    RemoveGuildData(guild.id);
 });
 
 client.once(Events.ClientReady, () => {
@@ -118,7 +118,7 @@ client.once(Events.ClientReady, () => {
 
     client.guilds.cache.forEach((guild) => {
         console.log(`Loading Guild: ${guild.name} (${guild.id})`);
-        getGuildData(guild.id, client);
+        GetGuildData(guild.id, client);
     });
 
     // Register Voice Event

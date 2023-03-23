@@ -1,5 +1,5 @@
 import { Client, OverwriteType } from "discord.js";
-import { getGuildData } from "../../guildData";
+import { GetGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 import { Color } from "../../utils/color";
 import { fixMention } from "../../utils/tools";
@@ -8,7 +8,7 @@ function LoggerChannelRegister(
     client: Client,
     data: EVENT_RESPONSE["channelStateUpdate"]
 ) {
-    const dataGuild = getGuildData(data.guildId, client);
+    const dataGuild = GetGuildData(data.guildId, client);
 
     if (!dataGuild) {
         console.error("Guild data not found!");

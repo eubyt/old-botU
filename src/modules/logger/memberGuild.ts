@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import { getGuildData } from "../../guildData";
+import { GetGuildData } from "../../guildData";
 import { EVENT_RESPONSE } from "../../types";
 import { Color } from "../../utils/color";
 
@@ -7,7 +7,7 @@ async function LoggerMemberGuildRegister(
     client: Client,
     data: EVENT_RESPONSE["memberGuildUpdate"]
 ) {
-    const dataGuild = getGuildData(data.guildId, client);
+    const dataGuild = GetGuildData(data.guildId, client);
     const guild = client.guilds.cache.get(data.guildId);
     if (!guild) {
         console.error("Guild not found!");
