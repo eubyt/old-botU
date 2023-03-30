@@ -31,7 +31,8 @@ async function sendMessageToChannel(
         return;
     }
 
-    const messageData = structuredClone(
+    const messageData = Object.assign(
+        {},
         dataGuild.getMessageTemplate(idMessage)
     );
 

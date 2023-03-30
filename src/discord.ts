@@ -76,8 +76,8 @@ const client = new Client({
 });
 
 // Configs
-const BOT_DISCORD_PRESENCE_INTERVAL = 600;
-const BOT_NOTIFICATION_CHECK_INTERVAL = 20;
+const BOT_DISCORD_PRESENCE_INTERVAL = 800;
+const BOT_NOTIFICATION_CHECK_INTERVAL = 60;
 
 function registerOnDiscord(eventClass: DiscordEvent) {
     const data = Reflect.getMetadata("discord:on", eventClass, "registerEvent");
