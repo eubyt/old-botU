@@ -26,9 +26,10 @@ export class Twitter {
     async PublicTweet(tweet: string) {
         await this.T.post("statuses/update", { status: tweet }, (err, res) => {
             if (err) {
-                throw err;
+                console.log("Erro ao publicar tweet");
+            } else {
+                console.log("Tweet publicado com sucesso");
             }
-            console.log("Tweet publicado com sucesso");
         });
     }
 

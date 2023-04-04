@@ -21,11 +21,6 @@ function NotificationsCheck(client: Client, guildId: string) {
         console.log(`Checking ${x.twitchId}...`, {
             streamer_online: stream.streamer_online,
         });
-        if (!stream.streamer_online)
-            dataGuild.NOTIFICATIONS.splice(
-                dataGuild.NOTIFICATIONS.indexOf(x.twitchId),
-                1
-            );
 
         if (
             stream.streamer_online &&
@@ -68,6 +63,17 @@ function NotificationsCheck(client: Client, guildId: string) {
                 );
 
                 twitter.Logout();
+            }
+        } else {
+            if (!stream.streamer_online) {
+                const index = dataGuild.NOTIFICATIONS.indexOf(x.twitchId);
+                if (index > -1) {
+                    dataGuild.NOTIFICATIONS.splice(index, 1);
+                } else {
+                    console.log("Streamer offline!");
+                }
+            } else {
+                console.log("Streamer já notificado!");
             }
         }
     });
